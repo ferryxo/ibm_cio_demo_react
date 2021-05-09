@@ -10,6 +10,24 @@
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Jest", // This is the configuration name you will see in debug sidebar
+            "type": "node",
+            "request": "launch",
+            "port": 5858,
+            "address": "localhost",
+            "stopOnEntry": false,
+            "runtimeExecutable": null,
+            "env": {
+                "NODE_ENV": "production" // You can setup here any env vars you
+            },
+            "runtimeArgs": [
+                "--debug-brk",
+                "./node_modules/.bin/jest", // Path to Jest
+                "-i"
+            ],
+            "cwd": "${workspaceRoot}"
         }
     ]
 }

@@ -10,4 +10,3 @@ export const getTableData = (groups) => {
     });
     return data;
 }
-

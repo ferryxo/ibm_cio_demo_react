@@ -5,13 +5,16 @@ import { groupSelector, fetchGroups } from './redux/slices/groupSlice';
 import { fetchColors } from './redux/slices/colorSlice';
 import Table from './components/Table';
 import { getTableData } from './utils/DataUtils';
+import { getBearerToken } from './utils/HttpService';
 
 function App() {
   const dispatch = useDispatch();
   
   useEffect(() => {
-    dispatch(fetchGroups());
-    dispatch(fetchColors());
+    getBearerToken().then(token => {
+      dispatch(fetchGroups(token));
+      dispatch(fetchColors(token));
+    });
   }, [dispatch]);
 
   const { groups, loading, hasError } = useSelector(groupSelector);

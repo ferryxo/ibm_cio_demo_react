@@ -1,7 +1,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+export const initialState = {
   groups: [],
   loading: false,
   hasErrors: false,
@@ -27,13 +27,17 @@ const colorSlice = createSlice({
 });
 
 
-export function fetchColors() {
+export function fetchColors(token) {
   return async dispatch => {
     dispatch(getColors());
     try {      
       const response = await fetch('http://localhost:8081/api/v1/colors',
         {
-          mode: 'cors'          
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token.jwt,
+          }
         });
       const data = await response.json();
       dispatch(getColorsSuccess(data));

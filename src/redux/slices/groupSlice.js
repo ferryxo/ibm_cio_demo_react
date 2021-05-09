@@ -25,8 +25,7 @@ const groupSlice = createSlice({
     }
 });
 
-
-export function fetchGroups() {
+export function fetchGroups(token) {
   return async dispatch => {
     dispatch(getGroups());
     try {      
@@ -35,6 +34,7 @@ export function fetchGroups() {
           mode: 'cors',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token.jwt,
           }
         });
       const data = await response.json();

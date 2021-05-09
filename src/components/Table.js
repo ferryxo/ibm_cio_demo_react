@@ -15,7 +15,6 @@ const Table = ({ title, data }) => {
 
     const dispatch = useDispatch();
     
-
     const re = new RegExp(pattern, 'i')
     const filteredData = pattern
         ? data.filter(d => re.test(d.group) || re.test(d.name) || re.test(d.color))            
@@ -53,7 +52,7 @@ const Table = ({ title, data }) => {
                     <td><a id='name' href='_blank' onClick={handleSort}>Name</a></td>
                     <td><a id='color' href='_blank' onClick={handleSort}>Color</a></td>
                     <td>
-                        Edit&nbsp;
+                        {!showAddButton && <div>Edit</div>}
                         {showAddButton && <button className='pure-button pure-button-active' onClick={() => insertRow(1)}> Add </button>}
                     </td>
                 </tr>
