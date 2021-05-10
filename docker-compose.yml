@@ -1,0 +1,8 @@
+version: "3.3"
+
+services:
+  ibm-demo-frontend:
+    image: ferryxo/ibm-demo-frontend
+    container_name: ibm-demo-frontend-container
+    ports:
+      - 3000:3000
