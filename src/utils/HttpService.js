@@ -33,7 +33,7 @@ export const getBearerToken = async () =>  {
     return token;
 }
 
-export const postEditMember = ({ groupId, group, memberId, name, color }) => {
+export const postEditMember = async ({ groupId, group, memberId, name, color }) => {
     const objGroup = {
         'id': groupId,
         group,
@@ -41,34 +41,35 @@ export const postEditMember = ({ groupId, group, memberId, name, color }) => {
            { 'id': memberId, color, name }
         ]
     };
-    getBearerToken().then(token => {
-        fetch(`http://localhost:8081/api/v1/members/${memberId}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token.jwt
-                },
-                method: 'post',
-                body: JSON.stringify(objGroup)
-            }).then(function (response) {
-                if (response.ok) {                    
-                    store.dispatch(fetchGroups(token));                    
-                }
-            }).catch((e) => console.log(e));
-    });    
+
+    const token = await getBearerToken();
+
+    fetch(`http://localhost:8081/api/v1/members/${memberId}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token.jwt
+        },
+        method: 'post',
+        body: JSON.stringify(objGroup)
+    }).then(function (response) {
+        if (response.ok) {                    
+            store.dispatch(fetchGroups(token));                    
+        }
+    }).catch((e) => console.log(e));
+
 };
 
-export const deleteMemberById = (id) => {
-    getBearerToken().then(token => {
-        fetch(`http://localhost:8081/api/v1/members/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token.jwt
-            },
-            method: 'delete'        
-        }).then(function (response) {
-            if (response.ok) {
-                store.dispatch(fetchGroups(token));
-            }
-        }).catch((e) => console.log(e));
-    }); 
+export const deleteMemberById = async (id) => {
+    const token = await getBearerToken();
+    fetch(`http://localhost:8081/api/v1/members/${id}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token.jwt
+        },
+        method: 'delete'        
+    }).then(function (response) {
+        if (response.ok) {
+            store.dispatch(fetchGroups(token));
+        }
+    }).catch((e) => console.log(e));    
 };
