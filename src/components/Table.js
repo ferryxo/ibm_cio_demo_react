@@ -28,16 +28,13 @@ const Table = ({ title, data }) => {
         dispatch(setSortColumn({ sortBy: sortByRequest, sortDirection: sortDirRequest }));
     };
     
-    const insertRow = (index) => {
-        const emptyData = { groupId: null, group: '_EDIT_ME_', memberId: null , name: '_EDIT_ME_', color: 'Red', isEdit: true }
+    const insertRow = (index, group, color) => {
+        const emptyData = { groupId: null, group, memberId: null , name: '_EDIT_ME_', color, isEdit: true }
         filteredData.splice(index, 0, emptyData);
         setForceUpdate(forceUpdate+1);
     };
 
-    const rows = filteredData && filteredData.map((data, index) => {
-        const props = { ...data, insertRow, index };
-        return <TableRow key={ index } { ...props } ></TableRow >
-    });
+    const rows = createRow(filteredData, insertRow, sortBy);
 
     const showAddButton = filteredData.length < 1;
 
@@ -66,9 +63,26 @@ const Table = ({ title, data }) => {
     return table;
 };
 
+
+const createRow = (filteredData, insertRow, sortBy) => {
+    const shouldNotBeGrouped = ['name'];
+    let lastGroup = null;
+    const rows = filteredData && filteredData.map((data, index) => {
+        const props = { ...data, insertRow, index };
+        const currentGroup = data[sortBy];
+        const seperator = !shouldNotBeGrouped.includes(sortBy) && lastGroup !== currentGroup
+            ? <tr key={100 + index} className='pure-table-odd'><td colSpan={4} align={'middle'}>{currentGroup}</td></tr>
+            : null;
+        lastGroup = currentGroup;
+        return <>{seperator} <TableRow key={index} {...props}></TableRow></>;
+    });
+    return rows;
+}
+
 Table.propTypes = {
     title: PropTypes.string,
     data: PropTypes.array.isRequired
 };
 
 export default Table;
+

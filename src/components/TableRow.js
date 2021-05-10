@@ -44,7 +44,7 @@ const TableRow = ({ index, isEdit, groupId, group, memberId, name, color, insert
     };
 
     const onAddClick = () => {        
-        insertRow(index);
+        insertRow(index, group, color);
     };
 
 
